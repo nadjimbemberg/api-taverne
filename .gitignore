@@ -1,0 +1,18 @@
+# Secrets : ne jamais versionner
+.env
+.env.*
+# ... sauf le modèle sans mot de passe, qui doit être versionné
+!.env.example
+
+# Dépendances : se réinstallent avec npm install
+node_modules/
+
+# Projet Next.js séparé (il a déjà son propre dépôt Git)
+my-app/
+
+# Journaux d'erreurs npm
+npm-debug.log*
+
+# Fichiers créés automatiquement par Windows et macOS
+Thumbs.db
+.DS_Store
