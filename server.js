@@ -64,50 +64,7 @@ app.get('/api/pnj', async (req, res) => {
   }
 });
 
-/* Hors sujet pour ce TP : mis en commentaire pour l'instant
-
-app.get('/api/pnj/ :id', async (req, res) => {
-try {
-
-  const idSaisi = req.params.id;
-  const resultat = await pool.query(
-  "SELECT * FROM Personnages WHERE id = $1",
-  [idSaisi] );
-
-  if (resultat.rows.length === 0) {
-
-    return res
-    .status(404)
-    .json({ message: `Aucun PNJ trouvé avec l'ID ${idSaisi}` });
-  }
-
-  res.status(200).json(resultat.rows[0]);
-
-res.status(200).json(resultat.rows[0]);
-}catch (err) {
-
-  console.error('Erreur SQL ', err.message);
-
-res
-.status(500)
-.json({ message: 'Erreur lors de la récupération du PNJ' });
-}
-});
-
-app.put("api/pnj/niveau"  , (req, res) => {
-
-  const id = req.body.id;
-  const nouveauNiveau = req.body.niveau;
-
-  pool.query(
-    'UPDATE Personnages SET niveau = $1 WHERE id = ${nouveauNiveau} Where id =  ${id}',
-);
-
-res.json({ message: "Niveau mis à jour !" });
-
-});
-
-*/
+// Les routes /:id et PUT vues en cours sont dans cours/exemples-du-cours.md
 
 // Route inconnue : on répond en JSON (au lieu de la page HTML d'Express)
 app.use((req, res) => {

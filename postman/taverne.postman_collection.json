@@ -1,0 +1,136 @@
+{
+  "info": {
+    "name": "API Taverne aux PNJ",
+    "description": "Tests du TP « Les Fondations de la Taverne ». Lancer d'abord le serveur avec : node server.js",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" }
+  ],
+  "item": [
+    {
+      "name": "1. GET /api/pnj - Liste des PNJ (200)",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/pnj"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Code 200 OK', () => pm.response.to.have.status(200));",
+              "pm.test('Réponse au format JSON', () => pm.response.to.be.json);",
+              "pm.test('La réponse est un tableau de PNJ', () => pm.expect(pm.response.json()).to.be.an('array'));",
+              "pm.test('Chaque PNJ a un nom, une classe et un niveau', () => {",
+              "  pm.response.json().forEach(p => pm.expect(p).to.include.keys('id', 'nom', 'classe', 'niveau'));",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. POST /api/pnj - Création complète (201)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nom\": \"Bilbo\",\n  \"classe\": \"Voleur\",\n  \"niveau\": 2\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}/api/pnj"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Code 201 Created', () => pm.response.to.have.status(201));",
+              "pm.test('Message de confirmation JSON', () => pm.expect(pm.response.json().message).to.be.a('string'));",
+              "pm.test('Le PNJ créé a reçu un id', () => pm.expect(pm.response.json().pnj.id).to.be.a('number'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. POST /api/pnj - Requête incomplète (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nom\": \"Bilbo\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}/api/pnj"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Code 400 Bad Request', () => pm.response.to.have.status(400));",
+              "pm.test('Message d\\'erreur JSON', () => pm.expect(pm.response.json().message).to.be.a('string'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. POST /api/pnj - JSON mal formé (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nom\": \"Bilbo\",\n",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}/api/pnj"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Code 400 Bad Request', () => pm.response.to.have.status(400));",
+              "pm.test('Réponse au format JSON (pas une page HTML)', () => pm.response.to.be.json);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. GET /api/inconnue - Route introuvable (404)",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/inconnue"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Code 404 Not Found', () => pm.response.to.have.status(404));",
+              "pm.test('Réponse au format JSON (pas une page HTML)', () => pm.response.to.be.json);"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
