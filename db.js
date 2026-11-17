@@ -7,8 +7,11 @@ const pool = new Pool({
 
   ssl: {
     rejectUnauthorized: false
-  }
-});
+  },
+
+  connectionTimeoutMillis: 10000,
+  query_timeout: 10000
+}); 
 
 pool.connect((err, client, release) => {
   if (err) {
@@ -19,8 +22,6 @@ pool.connect((err, client, release) => {
   }
 });
 
-// Tolérance aux pannes : si Neon coupe une connexion inactive,
-// on affiche l'erreur au lieu de laisser Node planter.
 pool.on('error', (err) => {
   console.error('Erreur inattendue du pool PostgreSQL :', err.message);
 });
