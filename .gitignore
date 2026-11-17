@@ -7,9 +7,6 @@
 # Dépendances : se réinstallent avec npm install
 node_modules/
 
-# Projet Next.js séparé (il a déjà son propre dépôt Git)
-my-app/
-
 # Journaux d'erreurs npm
 npm-debug.log*
 
